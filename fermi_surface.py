@@ -198,7 +198,8 @@ class fermi_surface():
                             [self.tx[s][2], self.ty[s][2], self.tz[s][2]]], 
                             [self.tc[s][0], self.tc[s][1], self.tc[s][2]])
 
-    def draw(self):
+    def draw(self, fermi=8.34):
+        self.fermi=fermi
         trace = []
         BZ = self.vasprun.final_structure.lattice.get_brillouin_zone()
         for boundary in BZ:
@@ -254,4 +255,10 @@ class fermi_surface():
                 zaxis=dict(visible=False))
         )
         fig.update_layout(legend_orientation="h")
-        fig.show()
+        #fig.show()
+        return fig
+
+    def draw_hist(self):
+        fig = go.Figure(data = [go.Histogram(x=np.array(self.triangles_c).reshape(-1), nbinsx=30)])
+        fig.update_layout(width=800, height=700)
+        return fig
